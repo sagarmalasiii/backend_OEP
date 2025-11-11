@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: OEP
+  datasource:
+    url: jdbc:postgresql://localhost:5432/OEP
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
+server:
+  servlet:
+    context-path: /api
+
