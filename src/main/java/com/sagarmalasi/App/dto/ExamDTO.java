@@ -1,11 +1,9 @@
 package com.sagarmalasi.App.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sagarmalasi.App.entity.enums.ExamStatus;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +11,8 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ExamDTO {
     private Long id;
     @NotNull
@@ -32,8 +32,9 @@ public class ExamDTO {
 
     private Long durationInMinutes;
     private Long instituteId;
-    private ExamStatus examStatus;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private ExamStatus examStatus;
 
 
 

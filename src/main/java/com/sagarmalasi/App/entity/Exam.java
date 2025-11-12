@@ -38,13 +38,13 @@ public class Exam {
 
     private Integer totalQuestions;
 
-    @NotNull
+    @Column(name = "start_registration_time",nullable = false)
     private LocalDateTime startRegistrationTime;
-    @NotNull
+    @Column(name = "end_registration_time",nullable = false)
     private LocalDateTime endRegistrationTime;
-    @NotNull
+    @Column(name = "exam_start_time",nullable = false)
     private LocalDateTime examStartTime;
-    @NotNull
+    @Column(name = "exam_end_time",nullable = false)
     private LocalDateTime examEndTime;
 
     @Transient
@@ -55,7 +55,7 @@ public class Exam {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status",nullable = false)
-    private ExamStatus examStatus = ExamStatus.DRAFT;
+    private ExamStatus examStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institute_id",nullable = false)
