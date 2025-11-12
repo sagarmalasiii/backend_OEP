@@ -9,6 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -52,14 +54,15 @@ public class Exam {
         if (examStartTime == null || examEndTime == null) return 0;
         return Duration.between(examStartTime, examEndTime).toMinutes();
     }
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status",nullable = false)
     private ExamStatus examStatus;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institute_id",nullable = false)
     private Institute institute;
+
+    @OneToMany(mappedBy = "exam",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ExamRegistration> registrationList = new ArrayList<>();
 
     @CreationTimestamp
     @Column(updatable = false)

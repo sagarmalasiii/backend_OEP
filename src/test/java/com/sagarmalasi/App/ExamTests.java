@@ -1,7 +1,7 @@
 package com.sagarmalasi.App;
 
 import com.sagarmalasi.App.dto.ExamDTO;
-import com.sagarmalasi.App.entity.enums.ExamStatus;
+
 import com.sagarmalasi.App.service.ExamService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +18,15 @@ public class ExamTests {
     @Test
     public void testExamCreation(){
         ExamDTO dto = ExamDTO.builder()
-                .title("BCA Entrance")
-                .examCode("FOHSS-2025")
-                .details("This is a 5 question examination..")
+                .title("CSIT Entrance")
+                .examCode("CSIT-2025")
+                .details("This is a 2 question examination..")
                 .startRegistrationTime(LocalDateTime.of(2025,11,13,12,0))
                 .endRegistrationTime(LocalDateTime.of(2025,11,14,10,20))
                 .examStartTime(LocalDateTime.of(2025,11,15,2,0))
                 .examEndTime(LocalDateTime.of(2025,11,15,3,0))
                 .instituteId(2L)
-                .examStatus(ExamStatus.REGISTRATION_OPEN)
+
                 .build();
 
         ExamDTO responseDto = examService.createExam(dto);

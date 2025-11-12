@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,31 +25,16 @@ public class ExamService {
 
     @Transactional
     public ExamDTO createExam(ExamDTO examDTO) {
-
         if (examRepository.existsByExamCode(examDTO.getExamCode())) {
             throw new IllegalArgumentException("Exam code exists: " + examDTO.getExamCode());
         }
-
         Institute institute = instituteRepository.findById(examDTO.getInstituteId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Institute ID: " + examDTO.getInstituteId()));
-
         Exam exam = modelMapper.map(examDTO, Exam.class);
         exam.setInstitute(institute);
-
-        LocalDateTime now = LocalDateTime.now();
-
-        if (now.isBefore(exam.getStartRegistrationTime())) {
+        if (exam.getExamStatus() == null) {
             exam.setExamStatus(ExamStatus.DRAFT);
-        } else if (now.isBefore(exam.getEndRegistrationTime())) {
-            exam.setExamStatus(ExamStatus.REGISTRATION_OPEN);
-        } else if (now.isBefore(exam.getExamStartTime())) {
-            exam.setExamStatus(ExamStatus.REGISTRATION_CLOSED);
-        } else if (now.isBefore(exam.getExamEndTime())) {
-            exam.setExamStatus(ExamStatus.ACTIVE);
-        } else {
-            exam.setExamStatus(ExamStatus.COMPLETED);
         }
-
         Exam newExam = examRepository.save(exam);
 
         ExamDTO response = modelMapper.map(newExam, ExamDTO.class);
@@ -60,6 +46,15 @@ public class ExamService {
     public List<ExamDTO> findAllOpenExams(){
         List<Exam> exams = examRepository.findALlRegistrationOpenExams();
         return exams.stream().map((element) -> modelMapper.map(element, ExamDTO.class)).toList();
+    }
+
+    public List<ExamDTO> getAllExams(Long instituteId){
+        Institute institute = instituteRepository.findById(instituteId).orElseThrow();
+
+
+        List<Exam> exams = examRepository.findByInstitute(institute);
+        return exams.stream().map((element) -> modelMapper.map(element, ExamDTO.class)).collect(Collectors.toList());
+
     }
 
 }
